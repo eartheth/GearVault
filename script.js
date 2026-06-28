@@ -1,6 +1,7 @@
 // ==========================================
 // GearVault
 // script.js
+// Part 1 / 3
 // ==========================================
 
 import {
@@ -8,47 +9,46 @@ import {
     addItem,
     updateItem,
     getInventory,
-    getRecentScans,
-    touchItem,
-    markFound,
-    markMissing
+    getRecentScans
 } from "./supabase.js";
 
-// --------------------------
-// DOM
-// --------------------------
+// ==========================================
+// Shortcuts
+// ==========================================
 
-const barcodeInput = document.getElementById("barcodeInput");
+const $ = id => document.getElementById(id);
 
-const scanBtn = document.getElementById("scanBtn");
+// ==========================================
+// DOM Elements
+// ==========================================
 
-const saveBtn = document.getElementById("saveBtn");
+const barcodeInput = $("barcodeInput");
+const scanBtn      = $("scanBtn");
+const saveBtn      = $("saveBtn");
+const cameraBtn    = $("cameraBtn");
 
-const foundBtn = document.getElementById("foundBtn");
+// Dashboard
 
-const missingBtn = document.getElementById("missingBtn");
+const totalItems     = $("totalItems");
+const availableItems = $("availableItems");
+const missingItems   = $("missingItems");
 
-const totalItems = document.getElementById("totalItems");
+// Inputs
 
-const availableItems = document.getElementById("availableItems");
+const itemName     = $("itemName");
+const itemBarcode  = $("itemBarcode");
+const itemCase     = $("itemCase");
+const itemLocation = $("itemLocation");
+const itemQty      = $("itemQty");
 
-const missingItems = document.getElementById("missingItems");
+// NEW INPUT (change Quantity label to Have in HTML)
+const itemHave     = $("itemHave");
 
-const recentTable = document.getElementById("recentTable");
+// Recent Table
 
-const itemName = document.getElementById("itemName");
+const recentTable = $("recentTable");
 
-const itemBarcode = document.getElementById("itemBarcode");
-
-const itemCategory = document.getElementById("itemCategory");
-
-const itemCase = document.getElementById("itemCase");
-
-const itemLocation = document.getElementById("itemLocation");
-
-const itemQty = document.getElementById("itemQty");
-
-// --------------------------
+// ==========================================
 
 let currentItem = null;
 
@@ -56,19 +56,27 @@ let currentItem = null;
 // Startup
 // ==========================================
 
-loadDashboard();
+window.addEventListener("load", async ()=>{
 
-loadRecent();
+    await refreshDashboard();
+
+    await refreshRecent();
+
+    barcodeInput.focus();
+
+});
 
 // ==========================================
-// Barcode Scan
+// Events
 // ==========================================
 
-scanBtn.onclick = searchBarcode;
+scanBtn.addEventListener("click", searchBarcode);
 
-barcodeInput.addEventListener("keypress", e=>{
+barcodeInput.addEventListener("keydown",(e)=>{
 
     if(e.key==="Enter"){
+
+        e.preventDefault();
 
         searchBarcode();
 
@@ -76,119 +84,226 @@ barcodeInput.addEventListener("keypress", e=>{
 
 });
 
+// Save button
+
+saveBtn.addEventListener("click", saveItem);
+
+// Camera button (Part 3)
+
+cameraBtn.addEventListener("click", startCameraScanner);
+
+// ==========================================
+// Search Barcode
 // ==========================================
 
 async function searchBarcode(){
 
-    const code = barcodeInput.value.trim();
+    const barcode = barcodeInput.value.trim();
 
-    if(code==="") return;
+    if(barcode===""){
 
-    const item = await getItem(code);
+        alert("Scan a barcode first.");
+
+        return;
+
+    }
+
+    const item = await getItem(barcode);
+
+    // ----------------------------
+    // FOUND
+    // ----------------------------
 
     if(item){
 
-        currentItem=item;
+        currentItem = item;
 
         fillForm(item);
 
-        await touchItem(item.id);
+        await updateItem(item.id,{
 
-        loadRecent();
+            ...item,
 
-        alert("Item Found");
+            last_scan:new Date().toISOString()
 
-    }
+        });
 
-    else{
+        await refreshDashboard();
 
-        currentItem=null;
+        await refreshRecent();
 
-        clearForm();
+        barcodeInput.select();
 
-        itemBarcode.value=code;
-
-        alert("Item not found.\nFill in details then press Save.");
+        return;
 
     }
+
+    // ----------------------------
+    // NOT FOUND
+    // ----------------------------
+
+    currentItem = null;
+
+    clearForm();
+
+    itemBarcode.value = barcode;
+
+    itemHave.value = 1;
+
+    alert("Item not found.\nEnter the details then press SAVE.");
 
 }
 
+// ==========================================
+// Fill Form
 // ==========================================
 
 function fillForm(item){
 
-    itemName.value=item.name;
+    itemName.value = item.name ?? "";
 
-    itemBarcode.value=item.barcode;
+    itemBarcode.value = item.barcode ?? "";
 
-    itemCategory.value=item.category;
+    itemCase.value = item.case ?? "";
 
-    itemCase.value=item.case_name;
+    itemLocation.value = item.location ?? "";
 
-    itemLocation.value=item.location;
+    itemQty.value = item.quantity ?? 1;
 
-    itemQty.value=item.quantity;
+    itemHave.value = item.have ?? 0;
 
 }
 
+// ==========================================
+// Clear Form
 // ==========================================
 
 function clearForm(){
 
-    itemName.value="";
+    itemName.value = "";
 
-    itemCategory.value="";
+    itemBarcode.value = "";
 
-    itemCase.value="";
+    itemCase.value = "";
 
-    itemLocation.value="";
+    itemLocation.value = "";
 
-    itemQty.value=1;
+    itemQty.value = 1;
+
+    itemHave.value = 0;
 
 }
 
 // ==========================================
-// Save
+// Status Helper
 // ==========================================
 
-saveBtn.onclick=async()=>{
+function getStatus(quantity,have){
+
+    quantity = Number(quantity);
+
+    have = Number(have);
+
+    if(have === quantity){
+
+        return "Complete";
+
+    }
+
+    if(have < quantity){
+
+        return `Missing ${quantity-have}`;
+
+    }
+
+    return `Over +${have-quantity}`;
+
+}
+
+// ==========================================
+// Part 2
+// Save + Dashboard + Recent Scans
+// ==========================================
+
+// ------------------------------------------
+// Save Item
+// ------------------------------------------
+
+async function saveItem(){
 
     const item={
 
-        barcode:itemBarcode.value,
+        barcode:Number(itemBarcode.value),
 
-        name:itemName.value,
+        name:itemName.value.trim(),
 
-        category:itemCategory.value,
+        case:itemCase.value.trim(),
 
-        case_name:itemCase.value,
-
-        location:itemLocation.value,
+        location:itemLocation.value.trim(),
 
         quantity:Number(itemQty.value),
 
-        status:"Available",
+        have:Number(itemHave.value),
 
         last_scan:new Date().toISOString()
 
     };
 
+    // Basic validation
+
+    if(item.name===""){
+
+        alert("Please enter an item name.");
+
+        return;
+
+    }
+
+    if(item.barcode===""){
+
+        alert("Please scan a barcode.");
+
+        return;
+
+    }
+
+    if(item.quantity<0){
+
+        alert("Quantity cannot be negative.");
+
+        return;
+
+    }
+
+    if(item.have<0){
+
+        alert("Have cannot be negative.");
+
+        return;
+
+    }
+
+    // -----------------------------
+    // Existing Item
+    // -----------------------------
+
     if(currentItem){
 
         await updateItem(currentItem.id,item);
 
-        alert("Updated!");
-
     }
+
+    // -----------------------------
+    // New Item
+    // -----------------------------
 
     else{
 
         await addItem(item);
 
-        alert("Added!");
-
     }
+
+    alert("Saved Successfully");
 
     currentItem=null;
 
@@ -196,91 +311,81 @@ saveBtn.onclick=async()=>{
 
     clearForm();
 
-    loadDashboard();
+    barcodeInput.focus();
 
-    loadRecent();
+    await refreshDashboard();
 
-};
+    await refreshRecent();
 
-// ==========================================
-// Found
-// ==========================================
+}
 
-foundBtn.onclick=async()=>{
-
-    if(!currentItem){
-
-        alert("Search an item first.");
-
-        return;
-
-    }
-
-    await markFound(currentItem.id);
-
-    loadDashboard();
-
-    loadRecent();
-
-    alert("Marked Available.");
-
-};
-
-// ==========================================
-// Missing
-// ==========================================
-
-missingBtn.onclick=async()=>{
-
-    if(!currentItem){
-
-        alert("Search an item first.");
-
-        return;
-
-    }
-
-    await markMissing(currentItem.id);
-
-    loadDashboard();
-
-    loadRecent();
-
-    alert("Marked Missing.");
-
-};
-
-// ==========================================
+// ------------------------------------------
 // Dashboard
-// ==========================================
+// ------------------------------------------
 
-async function loadDashboard(){
+async function refreshDashboard(){
 
     const items=await getInventory();
 
     totalItems.textContent=items.length;
 
-    availableItems.textContent=
+    let complete=0;
 
-    items.filter(i=>i.status==="Available").length;
+    let missing=0;
 
-    missingItems.textContent=
+    items.forEach(item=>{
 
-    items.filter(i=>i.status==="Missing").length;
+        if(Number(item.have)==Number(item.quantity)){
+
+            complete++;
+
+        }
+
+        else{
+
+            missing++;
+
+        }
+
+    });
+
+    availableItems.textContent=complete;
+
+    missingItems.textContent=missing;
 
 }
 
-// ==========================================
-// Recent Table
-// ==========================================
+// ------------------------------------------
+// Recent Scans
+// ------------------------------------------
 
-async function loadRecent(){
+async function refreshRecent(){
 
-    const scans=await getRecentScans();
+    const items=await getRecentScans();
 
     recentTable.innerHTML="";
 
-    scans.forEach(item=>{
+    items.forEach(item=>{
+
+        let badge="🟢";
+
+        let status="Complete";
+
+        if(Number(item.have)<Number(item.quantity)){
+
+            badge="🔴";
+
+            status=`Missing ${item.quantity-item.have}`;
+
+        }
+
+        if(Number(item.have)>Number(item.quantity)){
+
+            badge="🟠";
+
+            status=`Over +${item.have-item.quantity}`;
+
+        }
 
         recentTable.innerHTML+=`
 
@@ -288,7 +393,11 @@ async function loadRecent(){
 
             <td>
 
-            ${new Date(item.last_scan).toLocaleString()}
+                ${
+                    item.last_scan
+                    ? new Date(item.last_scan).toLocaleString()
+                    : "-"
+                }
 
             </td>
 
@@ -296,7 +405,9 @@ async function loadRecent(){
 
             <td>${item.barcode}</td>
 
-            <td>${item.status}</td>
+            <td>${item.have}/${item.quantity}</td>
+
+            <td>${badge} ${status}</td>
 
         </tr>
 
@@ -307,22 +418,140 @@ async function loadRecent(){
 }
 
 // ==========================================
-// Camera Scanner Placeholder
+// End of Part 2
 // ==========================================
 
+// ==========================================
+// Part 3
+// Camera Scanner
+// ==========================================
+
+let scanner;
+
+// ------------------------------------------
+
+async function startCameraScanner(){
+
+    document.getElementById("scannerModal").style.display="flex";
+
+    scanner = new Html5Qrcode("reader");
+
+    try{
+
+        await scanner.start(
+
+            {
+
+                facingMode:"environment"
+
+            },
+
+            {
+
+                fps:10,
+
+                qrbox:250
+
+            },
+
+            onScanSuccess
+
+        );
+
+    }
+
+    catch(err){
+
+        alert("Unable to access camera.");
+
+        console.error(err);
+
+    }
+
+}
+
+// ------------------------------------------
+
+async function onScanSuccess(code){
+
+    barcodeInput.value=code;
+
+    await stopScanner();
+
+    searchBarcode();
+
+}
+
+// ------------------------------------------
+
+async function stopScanner(){
+
+    if(scanner){
+
+        try{
+
+            await scanner.stop();
+
+            await scanner.clear();
+
+        }
+
+        catch(e){}
+
+    }
+
+    document.getElementById("scannerModal").style.display="none";
+
+}
+
+// ------------------------------------------
+
 document
-.getElementById("cameraBtn")
-.onclick=()=>{
+.getElementById("closeScanner")
+.onclick=stopScanner;
 
-    alert(
-`Camera scanning will be added next.
+// ==========================================
+// USB Barcode Scanner
+// ==========================================
 
-Recommended library:
+let buffer="";
 
-html5-qrcode
+let timer;
 
-It works directly inside your browser
-and updates the barcodeInput automatically.`
-    );
+document.addEventListener("keydown",(e)=>{
 
-};
+    if(e.key==="Enter"){
+
+        if(buffer.length>2){
+
+            barcodeInput.value=buffer;
+
+            buffer="";
+
+            searchBarcode();
+
+        }
+
+        return;
+
+    }
+
+    if(e.key.length===1){
+
+        buffer+=e.key;
+
+    }
+
+    clearTimeout(timer);
+
+    timer=setTimeout(()=>{
+
+        buffer="";
+
+    },80);
+
+});
+
+// ==========================================
+// End of script.js
+// ==========================================
