@@ -1,454 +1,289 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearVault</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<title>GearVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="app.js"></script>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+<div class="sidebar">
 
-<aside class="sidebar">
+    <div class="logo">
 
-<div class="logo">
+        <div class="logo-icon">
+            <i class="fa-solid fa-boxes-stacked"></i>
+        </div>
 
-GEAR<span>VAULT</span>
+        <div>
+            <h1>GearVault</h1>
+            <small>Lighting Inventory</small>
+        </div>
 
-</div>
+    </div>
 
-<nav>
+    <nav>
 
-<div class="nav-section">
+        <button class="nav-btn active">
+            <i class="fa-solid fa-barcode"></i>
+            Scanner
+        </button>
 
-<div class="nav-title">
-MAIN
-</div>
+        <button class="nav-btn">
+            <i class="fa-solid fa-box"></i>
+            Inventory
+        </button>
 
-<button class="nav active">
+        <button class="nav-btn">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            Recent
+        </button>
 
-Dashboard
+        <button class="nav-btn">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </button>
 
-</button>
-
-<button class="nav">
-
-Quick Scan
-
-</button>
-
-</div>
-
-<div class="nav-section">
-
-<div class="nav-title">
-
-INVENTORY
-
-</div>
-
-<button class="nav">
-
-Cases
-
-</button>
-
-<button class="nav">
-
-Equipment
-
-</button>
-
-<button class="nav">
-
-Missing
-
-<span class="badge">
-
-3
-
-</span>
-
-</button>
+    </nav>
 
 </div>
-
-<div class="nav-section">
-
-<div class="nav-title">
-
-OPERATIONS
-
-</div>
-
-<button class="nav">
-
-Show Check
-
-</button>
-
-<button class="nav">
-
-Maintenance
-
-</button>
-
-<button class="nav">
-
-History
-
-</button>
-
-</div>
-
-<div class="nav-section">
-
-<div class="nav-title">
-
-SYSTEM
-
-</div>
-
-<button class="nav">
-
-Reports
-
-</button>
-
-<button class="nav">
-
-Settings
-
-</button>
-
-</div>
-
-</nav>
-
-<footer>
-
-<div class="status">
-
-🟢 Online
-
-</div>
-
-</footer>
-
-</aside>
-
-<!-- MAIN -->
 
 <div class="main">
 
 <header>
 
-<h1>
+    <div>
 
-Dashboard
+        <h2>Inventory Scanner</h2>
 
-</h1>
+        <p>
+            Scan a barcode to instantly check and update equipment.
+        </p>
 
-<div class="headerButtons">
+    </div>
 
-<button>
+    <button id="cameraBtn" class="primary">
 
-🔄 Refresh
+        <i class="fa-solid fa-camera"></i>
 
-</button>
+        Camera Scan
 
-<button id="scanBtn" class="scanTop">
-
-SCAN
-
-</button>
-
-</div>
+    </button>
 
 </header>
 
-<!-- SEARCH -->
-
-<section class="search">
-
-<input
-
-id="search"
-
-placeholder="Search cases, equipment, serial number..."
-
->
-
-</section>
-
-<!-- DASHBOARD -->
-
 <section class="stats">
 
-<div class="card">
+    <div class="stat">
 
-<h3>
+        <span>Total Items</span>
 
-Equipment
+        <h3 id="totalItems">0</h3>
 
-</h3>
+    </div>
 
-<p id="equipmentCount">
+    <div class="stat">
 
---
+        <span>Available</span>
 
-</p>
+        <h3 id="availableItems">0</h3>
 
-</div>
+    </div>
 
-<div class="card">
+    <div class="stat">
 
-<h3>
+        <span>Missing</span>
 
-Cases
+        <h3 id="missingItems">0</h3>
 
-</h3>
-
-<p id="caseCount">
-
---
-
-</p>
-
-</div>
-
-<div class="card warning">
-
-<h3>
-
-Missing
-
-</h3>
-
-<p id="missingCount">
-
---
-
-</p>
-
-</div>
-
-<div class="card success">
-
-<h3>
-
-Ready
-
-</h3>
-
-<p>
-
-92%
-
-</p>
-
-</div>
+    </div>
 
 </section>
 
-<!-- QUICK ACTIONS -->
+<section class="scanner-card">
 
-<section class="actions">
+    <h3>
 
-<button class="bigAction">
+        <i class="fa-solid fa-barcode"></i>
 
-📷
+        Barcode Scanner
 
-<span>
+    </h3>
 
-SCAN
+    <div class="scan-box">
 
-</span>
+        <input
+            id="barcodeInput"
+            type="text"
+            placeholder="Scan or type barcode..."
+            autofocus>
 
-<small>
+        <button id="scanBtn">
 
-QR / Barcode
+            Search
 
-</small>
+        </button>
 
-</button>
-
-<button>
-
-📦
-
-<span>
-
-Cases
-
-</span>
-
-</button>
-
-<button>
-
-💡
-
-<span>
-
-Equipment
-
-</span>
-
-</button>
-
-<button>
-
-✅
-
-<span>
-
-Show Check
-
-</span>
-
-</button>
-
-<button>
-
-🔧
-
-<span>
-
-Maintenance
-
-</span>
-
-</button>
-
-<button>
-
-📊
-
-<span>
-
-Reports
-
-</span>
-
-</button>
+    </div>
 
 </section>
 
-<!-- RECENT -->
+<section class="equipment-card">
 
-<div class="grid">
+    <div class="card-title">
 
-<section class="panel">
+        Equipment Details
 
-<div class="panelTitle">
+    </div>
 
-Recent Activity
+    <div class="grid">
 
-</div>
+        <div>
 
-<div id="activity">
+            <label>Name</label>
 
-Loading...
+            <input
+            id="itemName"
+            type="text">
 
-</div>
+        </div>
+
+        <div>
+
+            <label>Barcode</label>
+
+            <input
+            id="itemBarcode"
+            type="text">
+
+        </div>
+
+        <div>
+
+            <label>Category</label>
+
+            <input
+            id="itemCategory"
+            type="text">
+
+        </div>
+
+        <div>
+
+            <label>Case</label>
+
+            <input
+            id="itemCase"
+            type="text">
+
+        </div>
+
+        <div>
+
+            <label>Location</label>
+
+            <input
+            id="itemLocation"
+            type="text">
+
+        </div>
+
+        <div>
+
+            <label>Quantity</label>
+
+            <input
+            id="itemQty"
+            type="number"
+            value="1">
+
+        </div>
+
+    </div>
+
+    <div class="buttons">
+
+        <button
+        class="success"
+        id="foundBtn">
+
+            ✓ Found
+
+        </button>
+
+        <button
+        class="warning"
+        id="missingBtn">
+
+            Missing
+
+        </button>
+
+        <button
+        class="primary"
+        id="saveBtn">
+
+            Save Changes
+
+        </button>
+
+    </div>
 
 </section>
 
-<section class="panel">
+<section class="recent-card">
 
-<div class="panelTitle">
+    <div class="card-title">
 
-Missing Equipment
+        Recent Scans
 
-</div>
+    </div>
 
-<div id="missingList">
+    <table>
 
-Loading...
+        <thead>
 
-</div>
+        <tr>
 
-</section>
+            <th>Time</th>
 
-</div>
+            <th>Name</th>
 
-<!-- CASES -->
+            <th>Barcode</th>
 
-<section class="panel">
+            <th>Status</th>
 
-<div class="panelTitle">
+        </tr>
 
-Recent Cases
+        </thead>
 
-</div>
+        <tbody id="recentTable">
 
-<div id="caseList">
+            <!-- JS -->
 
-Loading...
+        </tbody>
 
-</div>
+    </table>
 
 </section>
 
 </div>
 
-<!-- SCAN MODAL -->
-
-<div id="scanModal" class="modal">
-
-<div class="modalContent">
-
-<div class="modalHeader">
-
-<h2>
-
-Quick Scan
-
-</h2>
-
-<button id="closeModal">
-
-✕
-
-</button>
-
-</div>
-
-<input
-
-id="scanner"
-
-placeholder="Scan QR or Barcode..."
-
-autocomplete="off"
-
->
-
-<div id="scanResult">
-
-Waiting for scan...
-
-</div>
-
-</div>
-
-</div>
+<script type="module" src="supabase.js"></script>
+<script type="module" src="script.js"></script>
 
 </body>
-
 </html>
-```
