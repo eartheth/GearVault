@@ -1,0 +1,336 @@
+/* ===========================================
+   LightStock
+   Main Stylesheet
+=========================================== */
+
+:root{
+
+    --bg:#111827;
+    --surface:#1f2937;
+    --surface2:#374151;
+
+    --green:#22c55e;
+    --blue:#3b82f6;
+    --red:#ef4444;
+    --orange:#f59e0b;
+
+    --text:#f8fafc;
+    --sub:#9ca3af;
+
+    --radius:18px;
+
+}
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+}
+
+body{
+
+    background:var(--bg);
+    color:var(--text);
+
+}
+
+/* ================= HEADER ================= */
+
+header{
+
+    height:70px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px;
+
+    border-bottom:1px solid #2d3748;
+
+}
+
+.logo{
+
+    font-size:26px;
+    font-weight:700;
+
+}
+
+.header-right{
+
+    display:flex;
+    gap:10px;
+
+}
+
+header button{
+
+    border:none;
+
+    background:var(--surface);
+
+    color:white;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+/* ================= SEARCH ================= */
+
+.search{
+
+    padding:20px;
+
+}
+
+.search input{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    border:none;
+
+    outline:none;
+
+    background:var(--surface);
+
+    color:white;
+
+    font-size:17px;
+
+}
+
+/* ================= HERO ================= */
+
+.hero{
+
+    padding:20px;
+
+}
+
+.scanButton{
+
+    width:100%;
+
+    height:180px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+.scanButton:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.scanButton h2{
+
+    font-size:42px;
+
+    margin-top:8px;
+
+}
+
+.scanButton p{
+
+    color:#dbeafe;
+
+}
+
+/* ================= GRID ================= */
+
+.quickActions{
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(2,1fr);
+
+    gap:16px;
+
+    padding:20px;
+
+}
+
+.quickActions button{
+
+    background:var(--surface);
+
+    color:white;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.quickActions button:hover{
+
+    background:var(--surface2);
+
+}
+
+/* ================= STATS ================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(auto-fit,minmax(180px,1fr));
+
+    gap:15px;
+
+    padding:20px;
+
+}
+
+.card{
+
+    background:var(--surface);
+
+    border-radius:18px;
+
+    padding:20px;
+
+}
+
+.card h4{
+
+    color:var(--sub);
+
+    margin-bottom:12px;
+
+}
+
+.card span{
+
+    font-size:40px;
+
+    font-weight:bold;
+
+}
+
+/* ================= RECENT ================= */
+
+.recent{
+
+    padding:20px;
+
+}
+
+#recentActivity{
+
+    margin-top:12px;
+
+    background:var(--surface);
+
+    border-radius:18px;
+
+    padding:20px;
+
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottomNav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:75px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:#18181b;
+
+    border-top:1px solid #333;
+
+}
+
+.bottomNav button{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+.bottomNav p{
+
+    font-size:12px;
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+
+.quickActions{
+
+grid-template-columns:1fr;
+
+}
+
+.scanButton{
+
+height:150px;
+
+}
+
+.card span{
+
+font-size:30px;
+
+}
+
+}
