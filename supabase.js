@@ -60,7 +60,23 @@ export async function addItem(item){
 
     .from("inventory")
 
-    .insert([item]);
+    .insert([{
+
+        barcode:item.barcode,
+
+        name:item.name,
+
+        case:item.case,
+
+        location:item.location,
+
+        quantity:item.quantity,
+
+        have:item.have,
+
+        last_scan:new Date().toISOString()
+
+    }]);
 
     if(error){
 
@@ -82,7 +98,23 @@ export async function updateItem(id,item){
 
     .from("inventory")
 
-    .update(item)
+    .update({
+
+        barcode:item.barcode,
+
+        name:item.name,
+
+        case:item.case,
+
+        location:item.location,
+
+        quantity:item.quantity,
+
+        have:item.have,
+
+        last_scan:new Date().toISOString()
+
+    })
 
     .eq("id",id);
 
