@@ -5,19 +5,22 @@
 
 :root{
 
-    --bg:#111827;
-    --surface:#1f2937;
-    --surface2:#374151;
-
-    --green:#22c55e;
-    --blue:#3b82f6;
-    --red:#ef4444;
-    --orange:#f59e0b;
-
-    --text:#f8fafc;
-    --sub:#9ca3af;
-
-    --radius:18px;
+   --bg: #0C0C12;
+   --sidebar: #111118;
+   --panel: #17171F;
+   --panel-hover: #1F1F2A;
+   
+   --border: #252533;
+   
+   --primary: #F5A623;      /* Orange */
+   
+   --success: #3ECF8E;
+   --warning: #F5C842;
+   --danger: #E84040;
+   
+   --text: #E8EDF2;
+   --subtext: #8BA7BF;
+   --muted: #4A5568;
 
 }
 
