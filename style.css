@@ -1,338 +1,506 @@
-/* ===========================================
-   LightStock
-   Main Stylesheet
-=========================================== */
+/* ==========================================
+   GearVault
+   Style Sheet
+========================================== */
 
 :root{
 
-   --bg: #0C0C12;
-   --sidebar: #111118;
-   --panel: #17171F;
-   --panel-hover: #1F1F2A;
-   
-   --border: #252533;
-   
-   --primary: #F5A623;      /* Orange */
-   
-   --success: #3ECF8E;
-   --warning: #F5C842;
-   --danger: #E84040;
-   
-   --text: #E8EDF2;
-   --subtext: #8BA7BF;
-   --muted: #4A5568;
+    --bg:#0A0A0F;
+    --card:#1C1C26;
+    --card2:#15151d;
+
+    --amber:#F5A623;
+    --steel:#8BA7BF;
+
+    --text:#E8EDF2;
+    --muted:#8e99a6;
+
+    --green:#22c55e;
+    --red:#ef4444;
+
+    --border:rgba(255,255,255,.08);
 
 }
 
 *{
-
     margin:0;
     padding:0;
     box-sizing:border-box;
-
-    font-family:
-        Inter,
-        Arial,
-        sans-serif;
-
 }
 
 body{
 
     background:var(--bg);
+
     color:var(--text);
+
+    font-family:'Inter',sans-serif;
+
+    display:flex;
+
+    min-height:100vh;
 
 }
 
-/* ================= HEADER ================= */
+/* ==========================
+Sidebar
+========================== */
 
-header{
+.sidebar{
 
-    height:70px;
+    width:260px;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    background:#111117;
 
-    padding:20px;
+    border-right:1px solid var(--border);
 
-    border-bottom:1px solid #2d3748;
+    padding:28px;
 
 }
 
 .logo{
 
-    font-size:26px;
-    font-weight:700;
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:50px;
 
 }
 
-.header-right{
+.logo-icon{
+
+    width:58px;
+
+    height:58px;
+
+    background:var(--amber);
+
+    color:#000;
+
+    border-radius:14px;
 
     display:flex;
-    gap:10px;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
 
 }
 
-header button{
+.logo h1{
+
+    font-family:'Barlow Condensed',sans-serif;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    font-size:34px;
+
+}
+
+.logo small{
+
+    color:var(--muted);
+
+}
+
+.nav-btn{
+
+    width:100%;
 
     border:none;
 
-    background:var(--surface);
+    background:none;
 
-    color:white;
+    color:var(--text);
 
-    padding:10px 16px;
+    text-align:left;
+
+    padding:16px;
+
+    margin-bottom:10px;
 
     border-radius:12px;
 
     cursor:pointer;
 
-}
-
-/* ================= SEARCH ================= */
-
-.search{
-
-    padding:20px;
-
-}
-
-.search input{
-
-    width:100%;
-
-    padding:18px;
-
-    border-radius:14px;
-
-    border:none;
-
-    outline:none;
-
-    background:var(--surface);
-
-    color:white;
-
-    font-size:17px;
-
-}
-
-/* ================= HERO ================= */
-
-.hero{
-
-    padding:20px;
-
-}
-
-.scanButton{
-
-    width:100%;
-
-    height:180px;
-
-    border:none;
-
-    border-radius:25px;
-
-    background:linear-gradient(
-        135deg,
-        #2563eb,
-        #06b6d4
-    );
-
-    color:white;
-
-    cursor:pointer;
-
-}
-
-.scanButton:hover{
-
-    transform:translateY(-2px);
-
-}
-
-.scanButton h2{
-
-    font-size:42px;
-
-    margin-top:8px;
-
-}
-
-.scanButton p{
-
-    color:#dbeafe;
-
-}
-
-/* ================= GRID ================= */
-
-.quickActions{
-
-    display:grid;
-
-    grid-template-columns:
-
-        repeat(2,1fr);
-
-    gap:16px;
-
-    padding:20px;
-
-}
-
-.quickActions button{
-
-    background:var(--surface);
-
-    color:white;
-
-    border:none;
-
-    border-radius:18px;
-
-    padding:35px;
-
-    cursor:pointer;
+    font-size:15px;
 
     transition:.2s;
 
 }
 
-.quickActions button:hover{
+.nav-btn i{
 
-    background:var(--surface2);
+    width:30px;
 
 }
 
-/* ================= STATS ================= */
+.nav-btn:hover{
+
+    background:var(--card);
+
+}
+
+.nav-btn.active{
+
+    background:var(--amber);
+
+    color:#000;
+
+}
+
+/* ==========================
+Main
+========================== */
+
+.main{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+header h2{
+
+    font-family:'Barlow Condensed',sans-serif;
+
+    font-size:42px;
+
+}
+
+header p{
+
+    color:var(--muted);
+
+    margin-top:6px;
+
+}
+
+/* ==========================
+Buttons
+========================== */
+
+button{
+
+    font-family:inherit;
+
+}
+
+.primary{
+
+    background:var(--amber);
+
+    color:#000;
+
+}
+
+.success{
+
+    background:var(--green);
+
+    color:white;
+
+}
+
+.warning{
+
+    background:var(--red);
+
+    color:white;
+
+}
+
+.primary,
+.success,
+.warning{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px 22px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.primary:hover,
+.success:hover,
+.warning:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================
+Stats
+========================== */
 
 .stats{
 
     display:grid;
 
-    grid-template-columns:
+    grid-template-columns:repeat(3,1fr);
 
-        repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
 
-    gap:15px;
-
-    padding:20px;
+    margin-bottom:25px;
 
 }
 
-.card{
+.stat{
 
-    background:var(--surface);
+    background:var(--card);
+
+    border:1px solid var(--border);
 
     border-radius:18px;
 
-    padding:20px;
+    padding:22px;
 
 }
 
-.card h4{
+.stat span{
 
-    color:var(--sub);
+    color:var(--muted);
 
-    margin-bottom:12px;
-
-}
-
-.card span{
-
-    font-size:40px;
-
-    font-weight:bold;
+    font-size:14px;
 
 }
 
-/* ================= RECENT ================= */
+.stat h3{
 
-.recent{
+    font-family:'Barlow Condensed';
 
-    padding:20px;
+    font-size:44px;
 
-}
-
-#recentActivity{
-
-    margin-top:12px;
-
-    background:var(--surface);
-
-    border-radius:18px;
-
-    padding:20px;
+    margin-top:8px;
 
 }
 
-/* ================= BOTTOM NAV ================= */
+/* ==========================
+Cards
+========================== */
 
-.bottomNav{
+.scanner-card,
+.equipment-card,
+.recent-card{
 
-    position:fixed;
+    background:var(--card);
 
-    bottom:0;
+    border:1px solid var(--border);
 
-    left:0;
+    border-radius:20px;
 
-    width:100%;
+    padding:28px;
 
-    height:75px;
+    margin-bottom:25px;
+
+}
+
+.card-title{
+
+    font-family:'Barlow Condensed';
+
+    font-size:28px;
+
+    margin-bottom:20px;
+
+}
+
+/* ==========================
+Scanner
+========================== */
+
+.scan-box{
 
     display:flex;
 
-    justify-content:space-around;
-
-    align-items:center;
-
-    background:#18181b;
-
-    border-top:1px solid #333;
+    gap:15px;
 
 }
 
-.bottomNav button{
+.scan-box input{
 
-    background:none;
+    flex:1;
 
-    border:none;
+}
+
+/* ==========================
+Inputs
+========================== */
+
+input{
+
+    width:100%;
+
+    background:var(--card2);
+
+    border:1px solid var(--border);
 
     color:white;
 
-    cursor:pointer;
+    padding:14px;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
 
 }
 
-.bottomNav p{
+input:focus{
 
-    font-size:12px;
-
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:700px){
-
-.quickActions{
-
-grid-template-columns:1fr;
+    border-color:var(--amber);
 
 }
 
-.scanButton{
+label{
 
-height:150px;
+    display:block;
+
+    margin-bottom:8px;
+
+    color:var(--muted);
+
+    font-size:14px;
 
 }
 
-.card span{
+.grid{
 
-font-size:30px;
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+/* ==========================
+Table
+========================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    text-align:left;
+
+    padding:16px;
+
+    color:var(--amber);
+
+    font-family:'Barlow Condensed';
+
+    font-size:20px;
+
+}
+
+td{
+
+    padding:16px;
+
+    border-top:1px solid var(--border);
+
+}
+
+tbody tr:hover{
+
+    background:#222230;
+
+}
+
+/* ==========================
+Responsive
+========================== */
+
+@media(max-width:950px){
+
+.sidebar{
+
+    display:none;
+
+}
+
+.main{
+
+    padding:20px;
+
+}
+
+.stats{
+
+    grid-template-columns:1fr;
+
+}
+
+.grid{
+
+    grid-template-columns:1fr;
+
+}
+
+header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:20px;
+
+}
+
+.scan-box{
+
+    flex-direction:column;
+
+}
+
+.buttons{
+
+    flex-direction:column;
 
 }
 
