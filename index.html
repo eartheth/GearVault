@@ -16,6 +16,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 
 <body>
@@ -284,6 +285,22 @@
 
 <script type="module" src="supabase.js"></script>
 <script type="module" src="script.js"></script>
+<div id="scannerModal" class="scanner-modal">
 
+    <div class="scanner-window">
+
+        <div class="scanner-header">
+
+            <h3>Scan Barcode</h3>
+
+            <button id="closeScanner">✕</button>
+
+        </div>
+
+        <div id="reader"></div>
+
+    </div>
+
+</div>
 </body>
 </html>
