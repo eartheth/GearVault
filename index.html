@@ -1,194 +1,454 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GearVault</title>
 
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="module" src="app.js" defer></script>
+<title>GearVault</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="app.js"></script>
+
 </head>
+
 <body>
 
-<header>
+<!-- SIDEBAR -->
 
-    <div class="logo">
-        💡 <span>GearVault</span>
-    </div>
+<aside class="sidebar">
 
-    <div class="header-right">
+<div class="logo">
 
-        <button id="syncBtn">
-            ☁ Sync
-        </button>
+GEAR<span>VAULT</span>
 
-        <button id="settingsBtn">
-            ⚙
-        </button>
+</div>
 
-    </div>
+<nav>
 
-</header>
+<div class="nav-section">
 
-<main>
+<div class="nav-title">
+MAIN
+</div>
 
-<section class="search">
+<button class="nav active">
 
-    <input
-        id="searchInput"
-        type="text"
-        placeholder="Search equipment, case, barcode..."
-    >
-
-</section>
-
-<section class="hero">
-
-    <button id="scanButton" class="scanButton">
-
-        📷
-
-        <h2>SCAN</h2>
-
-        <p>Scan QR / Barcode</p>
-
-    </button>
-
-</section>
-
-<section class="quickActions">
-
-    <button id="casesBtn">
-
-        📦
-
-        <h3>Cases</h3>
-
-    </button>
-
-    <button id="equipmentBtn">
-
-        🔦
-
-        <h3>Equipment</h3>
-
-    </button>
-
-    <button id="showBtn">
-
-        ✅
-
-        <h3>Show Check</h3>
-
-    </button>
-
-    <button id="updateBtn">
-
-        🔄
-
-        <h3>Update</h3>
-
-    </button>
-
-</section>
-
-<section class="stats">
-
-    <div class="card">
-
-        <h4>Total Equipment</h4>
-
-        <span id="equipmentCount">
-            --
-        </span>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Total Cases</h4>
-
-        <span id="caseCount">
-            --
-        </span>
-
-    </div>
-
-    <div class="card">
-
-        <h4>Missing Items</h4>
-
-        <span id="missingCount">
-            --
-        </span>
-
-    </div>
-
-</section>
-
-<section class="recent">
-
-    <h2>
-
-        Recent Activity
-
-    </h2>
-
-    <div id="recentActivity">
-
-        Loading...
-
-    </div>
-
-</section>
-
-</main>
-
-<nav class="bottomNav">
-
-<button id="navDashboard">
-
-🏠
-
-<p>Home</p>
+Dashboard
 
 </button>
 
-<button id="navCases">
+<button class="nav">
 
-📦
-
-<p>Cases</p>
+Quick Scan
 
 </button>
 
-<button id="navScan">
+</div>
 
-📷
+<div class="nav-section">
 
-<p>Scan</p>
+<div class="nav-title">
+
+INVENTORY
+
+</div>
+
+<button class="nav">
+
+Cases
+
+</button>
+
+<button class="nav">
+
+Equipment
 
 </button>
 
-<button id="navEquipment">
+<button class="nav">
 
-🔦
+Missing
 
-<p>Equipment</p>
+<span class="badge">
+
+3
+
+</span>
+
+</button>
+
+</div>
+
+<div class="nav-section">
+
+<div class="nav-title">
+
+OPERATIONS
+
+</div>
+
+<button class="nav">
+
+Show Check
 
 </button>
 
-<button id="navSettings">
+<button class="nav">
 
-⚙
-
-<p>Settings</p>
+Maintenance
 
 </button>
+
+<button class="nav">
+
+History
+
+</button>
+
+</div>
+
+<div class="nav-section">
+
+<div class="nav-title">
+
+SYSTEM
+
+</div>
+
+<button class="nav">
+
+Reports
+
+</button>
+
+<button class="nav">
+
+Settings
+
+</button>
+
+</div>
 
 </nav>
 
+<footer>
+
+<div class="status">
+
+🟢 Online
+
+</div>
+
+</footer>
+
+</aside>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<header>
+
+<h1>
+
+Dashboard
+
+</h1>
+
+<div class="headerButtons">
+
+<button>
+
+🔄 Refresh
+
+</button>
+
+<button id="scanBtn" class="scanTop">
+
+SCAN
+
+</button>
+
+</div>
+
+</header>
+
+<!-- SEARCH -->
+
+<section class="search">
+
+<input
+
+id="search"
+
+placeholder="Search cases, equipment, serial number..."
+
+>
+
+</section>
+
+<!-- DASHBOARD -->
+
+<section class="stats">
+
+<div class="card">
+
+<h3>
+
+Equipment
+
+</h3>
+
+<p id="equipmentCount">
+
+--
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+
+Cases
+
+</h3>
+
+<p id="caseCount">
+
+--
+
+</p>
+
+</div>
+
+<div class="card warning">
+
+<h3>
+
+Missing
+
+</h3>
+
+<p id="missingCount">
+
+--
+
+</p>
+
+</div>
+
+<div class="card success">
+
+<h3>
+
+Ready
+
+</h3>
+
+<p>
+
+92%
+
+</p>
+
+</div>
+
+</section>
+
+<!-- QUICK ACTIONS -->
+
+<section class="actions">
+
+<button class="bigAction">
+
+📷
+
+<span>
+
+SCAN
+
+</span>
+
+<small>
+
+QR / Barcode
+
+</small>
+
+</button>
+
+<button>
+
+📦
+
+<span>
+
+Cases
+
+</span>
+
+</button>
+
+<button>
+
+💡
+
+<span>
+
+Equipment
+
+</span>
+
+</button>
+
+<button>
+
+✅
+
+<span>
+
+Show Check
+
+</span>
+
+</button>
+
+<button>
+
+🔧
+
+<span>
+
+Maintenance
+
+</span>
+
+</button>
+
+<button>
+
+📊
+
+<span>
+
+Reports
+
+</span>
+
+</button>
+
+</section>
+
+<!-- RECENT -->
+
+<div class="grid">
+
+<section class="panel">
+
+<div class="panelTitle">
+
+Recent Activity
+
+</div>
+
+<div id="activity">
+
+Loading...
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<div class="panelTitle">
+
+Missing Equipment
+
+</div>
+
+<div id="missingList">
+
+Loading...
+
+</div>
+
+</section>
+
+</div>
+
+<!-- CASES -->
+
+<section class="panel">
+
+<div class="panelTitle">
+
+Recent Cases
+
+</div>
+
+<div id="caseList">
+
+Loading...
+
+</div>
+
+</section>
+
+</div>
+
+<!-- SCAN MODAL -->
+
+<div id="scanModal" class="modal">
+
+<div class="modalContent">
+
+<div class="modalHeader">
+
+<h2>
+
+Quick Scan
+
+</h2>
+
+<button id="closeModal">
+
+✕
+
+</button>
+
+</div>
+
+<input
+
+id="scanner"
+
+placeholder="Scan QR or Barcode..."
+
+autocomplete="off"
+
+>
+
+<div id="scanResult">
+
+Waiting for scan...
+
+</div>
+
+</div>
+
+</div>
+
 </body>
+
 </html>
+```
