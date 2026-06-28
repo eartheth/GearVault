@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightStock</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+
+<header>
+
+    <div class="logo">
+        💡 <span>LightStock</span>
+    </div>
+
+    <div class="header-right">
+
+        <button id="syncBtn">
+            ☁ Sync
+        </button>
+
+        <button id="settingsBtn">
+            ⚙
+        </button>
+
+    </div>
+
+</header>
+
+<main>
+
+<section class="search">
+
+    <input
+        id="searchInput"
+        type="text"
+        placeholder="Search equipment, case, barcode..."
+    >
+
+</section>
+
+<section class="hero">
+
+    <button id="scanButton" class="scanButton">
+
+        📷
+
+        <h2>SCAN</h2>
+
+        <p>Scan QR / Barcode</p>
+
+    </button>
+
+</section>
+
+<section class="quickActions">
+
+    <button id="casesBtn">
+
+        📦
+
+        <h3>Cases</h3>
+
+    </button>
+
+    <button id="equipmentBtn">
+
+        🔦
+
+        <h3>Equipment</h3>
+
+    </button>
+
+    <button id="showBtn">
+
+        ✅
+
+        <h3>Show Check</h3>
+
+    </button>
+
+    <button id="updateBtn">
+
+        🔄
+
+        <h3>Update</h3>
+
+    </button>
+
+</section>
+
+<section class="stats">
+
+    <div class="card">
+
+        <h4>Total Equipment</h4>
+
+        <span id="equipmentCount">
+            --
+        </span>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Total Cases</h4>
+
+        <span id="caseCount">
+            --
+        </span>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Missing Items</h4>
+
+        <span id="missingCount">
+            --
+        </span>
+
+    </div>
+
+</section>
+
+<section class="recent">
+
+    <h2>
+
+        Recent Activity
+
+    </h2>
+
+    <div id="recentActivity">
+
+        Loading...
+
+    </div>
+
+</section>
+
+</main>
+
+<nav class="bottomNav">
+
+<button id="navDashboard">
+
+🏠
+
+<p>Home</p>
+
+</button>
+
+<button id="navCases">
+
+📦
+
+<p>Cases</p>
+
+</button>
+
+<button id="navScan">
+
+📷
+
+<p>Scan</p>
+
+</button>
+
+<button id="navEquipment">
+
+🔦
+
+<p>Equipment</p>
+
+</button>
+
+<button id="navSettings">
+
+⚙
+
+<p>Settings</p>
+
+</button>
+
+</nav>
+
+</body>
+</html>
